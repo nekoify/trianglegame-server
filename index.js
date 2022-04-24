@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 
 var playerPos = {}
 
-io.on('connection', async (socket) => {
+io.on('connection', async(socket) => {
 
     socket.on('playerJoin', (data) => {
         console.log("player joined")
@@ -49,6 +49,13 @@ io.on('connection', async (socket) => {
         console.log("user gone")
         delete playerPos[socket.id]
         io.sockets.emit("removePlayer", socket.id)
+    })
+
+    socket.on('inactive', function() {
+        console.log("user gone")
+        delete playerPos[socket.id]
+        io.sockets.emit("removePlayer", socket.id)
+        socket.disconnect(true)
     })
 
 });
