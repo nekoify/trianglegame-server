@@ -21,9 +21,13 @@ io.on('connection', async (socket) => {
         console.log("player joined")
         playerPos[data.id] = {
             x: data.x,
-            y: data.y
+            y: data.y,
+            velX: data.velX,
+            velY: data.velY,
+            angle: data.angle,
+            angVel: data.angVel
         }
-        console.log(playerPos)
+        socket.emit("createExistingPlayers", playerPos)
         io.sockets.emit("createPlayer", data)
         socket.emit("askCoords")
     });
@@ -31,15 +35,20 @@ io.on('connection', async (socket) => {
     socket.on('coords', (data) => {
         playerPos[data.id] = {
             x: data.x,
-            y: data.y
+            y: data.y,
+            velX: data.velX,
+            velY: data.velY,
+            angle: data.angle,
+            angVel: data.angVel
         }
-        console.log(playerPos)
+
         socket.emit("updatePlayers", playerPos)
     });
 
     socket.on('disconnect', function() {
         console.log("user gone")
         delete playerPos[socket.id]
+        io.sockets.emit("removePlayer", socket.id)
     })
 
 });
