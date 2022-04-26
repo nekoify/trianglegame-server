@@ -25,7 +25,9 @@ io.on('connection', async(socket) => {
             velX: data.velX,
             velY: data.velY,
             angle: data.angle,
-            angVel: data.angVel
+            angVel: data.angVel,
+            scale: data.scale,
+            username: data.username
         }
         socket.emit("createExistingPlayers", playerPos)
         io.sockets.emit("createPlayer", data)
@@ -39,7 +41,9 @@ io.on('connection', async(socket) => {
             velX: data.velX,
             velY: data.velY,
             angle: data.angle,
-            angVel: data.angVel
+            angVel: data.angVel,
+            scale: data.scale,
+            username: data.username
         }
 
         socket.emit("updatePlayers", playerPos)
