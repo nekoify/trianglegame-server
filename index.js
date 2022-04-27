@@ -75,6 +75,7 @@ io.on('connection', async(socket) => {
                 socket.disconnect(true);
             }
         });
+        io.sockets.emit("removePlayer", data.id)
     })
 
 });
