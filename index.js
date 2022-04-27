@@ -61,6 +61,21 @@ io.on('connection', async(socket) => {
         io.sockets.emit("removePlayer", socket.id)
         socket.disconnect(true)
     })
+    socket.on('inactive', function() {
+        console.log("user gone")
+        delete playerPos[socket.id]
+        io.sockets.emit("removePlayer", socket.id)
+        socket.disconnect(true)
+    })
+
+    socket.on('kick', function(data) {
+        io.to(data.id).emit('beenKicked', data.message);
+        io.sockets.sockets.forEach((socket) => {
+            if (socket.id === data.id) {
+                socket.disconnect(true);
+            }
+        });
+    })
 
 });
 
