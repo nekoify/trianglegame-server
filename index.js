@@ -61,12 +61,6 @@ io.on('connection', async(socket) => {
         io.sockets.emit("removePlayer", socket.id)
         socket.disconnect(true)
     })
-    socket.on('inactive', function() {
-        console.log("user gone")
-        delete playerPos[socket.id]
-        io.sockets.emit("removePlayer", socket.id)
-        socket.disconnect(true)
-    })
 
     socket.on('kick', function(data) {
         io.to(data.id).emit('beenKicked', data.message);
@@ -76,6 +70,10 @@ io.on('connection', async(socket) => {
             }
         });
         io.sockets.emit("removePlayer", data.id)
+    })
+
+    socket.on('sendMessage', function(data) {
+        io.sockets.emit("receiveMessage", data)
     })
 
 });
