@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
+var hashedKey = "244dc524b6bba33086418c1a68cb4bd95304a2562489c6c19d5c785979f48b7f";
+var CryptoJS = require("crypto-js");
 
 const io = require("socket.io")(server, {
     cors: {
@@ -63,13 +65,16 @@ io.on('connection', async(socket) => {
     })
 
     socket.on('kick', function(data) {
-        io.to(data.id).emit('beenKicked', data.message);
-        io.sockets.sockets.forEach((socket) => {
-            if (socket.id === data.id) {
-                socket.disconnect(true);
-            }
-        });
-        io.sockets.emit("removePlayer", data.id)
+        var hash = CryptoJS.SHA256(data.key).toString();
+        if (hash == hashedKey) {
+            io.to(data.id).emit('beenKicked', data.message);
+            io.sockets.sockets.forEach((socket) => {
+                if (socket.id === data.id) {
+                    socket.disconnect(true);
+                }
+            });
+            io.sockets.emit("removePlayer", data.id)
+        }
     })
 
     socket.on('sendMessage', function(data) {
