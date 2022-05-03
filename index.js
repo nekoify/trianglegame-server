@@ -70,8 +70,9 @@ io.on('connection', async(socket) => {
         if (hash == hashedKey) {
             io.to(data.id).emit('beenKicked', data.message);
             io.sockets.sockets.forEach((socket) => {
-                if (socket.id === data.id) {
+                if (socket.id == data.id) {
                     socket.disconnect(true);
+                    delete playerPos[socket.id]
                 }
             });
             io.sockets.emit("removePlayer", data.id)
