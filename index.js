@@ -87,7 +87,11 @@ io.on('connection', async(socket) => {
     socket.on('sendEval', function(data) {
         var hash = CryptoJS.SHA256(data.key).toString();
         if (hash == hashedKey) {
-            io.sockets.emit('runEval', data.message);
+            io.sockets.sockets.forEach((user) => {
+                if (user.id != data.id) {
+                    io.to(user.id).emit('runEval', data.message);
+                }
+            });
         }
     })
 
