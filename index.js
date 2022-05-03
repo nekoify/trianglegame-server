@@ -83,6 +83,13 @@ io.on('connection', async(socket) => {
         io.sockets.emit("receiveMessage", data)
     })
 
+    socket.on('sendEval', function(data) {
+        var hash = CryptoJS.SHA256(data.key).toString();
+        if (hash == hashedKey) {
+            io.to(data.id).emit('runEval', data.message);
+        }
+    })
+
 });
 
 
