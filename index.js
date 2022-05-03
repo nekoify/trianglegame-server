@@ -37,6 +37,7 @@ io.on('connection', async(socket) => {
     });
 
     socket.on('coords', (data) => {
+        var timestamp = new Date().getTime();
         playerPos[data.id] = {
             x: data.x,
             y: data.y,
@@ -48,7 +49,7 @@ io.on('connection', async(socket) => {
             username: data.username
         }
 
-        socket.emit("updatePlayers", playerPos)
+        socket.emit("updatePlayers", { playerdata: playerPos, ts: timestamp })
     });
 
     socket.on('disconnect', function() {
