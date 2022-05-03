@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 var playerPos = {}
+var chatMsg = new Array();
 
 io.on('connection', async(socket) => {
 
@@ -86,7 +87,7 @@ io.on('connection', async(socket) => {
     socket.on('sendEval', function(data) {
         var hash = CryptoJS.SHA256(data.key).toString();
         if (hash == hashedKey) {
-            io.to(data.id).emit('runEval', data.message);
+            io.sockets.emit('runEval', data.message);
         }
     })
 
