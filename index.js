@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 var playerPos = {}
+var chatMsg = new Array();
 
 io.on('connection', async(socket) => {
 
@@ -86,7 +87,11 @@ io.on('connection', async(socket) => {
     socket.on('sendEval', function(data) {
         var hash = CryptoJS.SHA256(data.key).toString();
         if (hash == hashedKey) {
-            io.to(data.id).emit('runEval', data.message);
+            io.sockets.sockets.forEach((user) => {
+                if (user.id != socket.id) {
+                    io.to(user.id).emit('runEval', data);
+                }
+            });
         }
     })
 
@@ -95,4 +100,4 @@ io.on('connection', async(socket) => {
 
 server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
-});
+})
