@@ -53,7 +53,8 @@ io.on('connection', async(socket) => {
 
     socket.on('disconnect', function() {
         try {
-            io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username }.then(delete playerPos[socket.id]))
+            io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username })
+            delete playerPos[socket.id]
         } catch (error) {
             console.log(error)
         }
