@@ -53,6 +53,7 @@ io.on('connection', async(socket) => {
 
     socket.on('disconnect', function() {
         try {
+            io.sockets.emit("receiveMessage", { username: data.username, type: "left", message: { time: 100 } })
             io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username })
             delete playerPos[socket.id]
         } catch (error) {
