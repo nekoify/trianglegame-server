@@ -12,7 +12,7 @@ const io = require("socket.io")(server, {
 });
 
 app.get('/', (req, res) => {
-    res.send('hello');
+    res.send('server');
 });
 
 var playerPos = {}
@@ -98,7 +98,6 @@ io.on('connection', async(socket) => {
     })
 
 });
-
 
 server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
