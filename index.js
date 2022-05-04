@@ -60,8 +60,8 @@ io.on('connection', async(socket) => {
         }
     })
 
-    socket.on('inactive', function() {
-        io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username })
+    socket.on('inactive', function(data) {
+        io.sockets.emit("removePlayer", { id: socket.id, username: data })
         delete playerPos[socket.id]
         socket.disconnect(true)
     })
