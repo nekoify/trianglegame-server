@@ -57,7 +57,7 @@ io.on('connection', async(socket) => {
     socket.on('disconnect', function() {
         console.log("user gone")
         delete playerPos[socket.id]
-        Object.keys(parsedData).every(async function(key) {
+        Object.keys(playerPos).every(async function(key) {
           if (key == socket.id) {
             io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
           }
@@ -67,7 +67,7 @@ io.on('connection', async(socket) => {
     socket.on('inactive', function() {
         console.log("user gone")
         delete playerPos[socket.id]
-        Object.keys(parsedData).every(async function(key) {
+        Object.keys(playerPos).every(async function(key) {
           if (key == socket.id) {
             io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
           }
