@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 var playerPos = {}
+
 var chatMsg = new Array();
 
 io.on('connection', async(socket) => {
@@ -56,13 +57,21 @@ io.on('connection', async(socket) => {
     socket.on('disconnect', function() {
         console.log("user gone")
         delete playerPos[socket.id]
-        io.sockets.emit("removePlayer", socket.id)
+        Object.keys(parsedData).every(async function(key) {
+          if (key == socket.id) {
+            io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
+          }
+        })
     })
 
     socket.on('inactive', function() {
         console.log("user gone")
         delete playerPos[socket.id]
-        io.sockets.emit("removePlayer", socket.id)
+        Object.keys(parsedData).every(async function(key) {
+          if (key == socket.id) {
+            io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
+          }
+        })
         socket.disconnect(true)
     })
 
@@ -76,7 +85,11 @@ io.on('connection', async(socket) => {
                     delete playerPos[socket.id]
                 }
             });
-            io.sockets.emit("removePlayer", data.id)
+            Object.keys(parsedData).every(async function(key) {
+          if (key == socket.id) {
+            io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
+          }
+        })
         }
     })
 
