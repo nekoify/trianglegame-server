@@ -56,22 +56,23 @@ io.on('connection', async(socket) => {
 
     socket.on('disconnect', function() {
         console.log("user gone")
-        delete playerPos[socket.id]
+
         Object.keys(playerPos).every(async function(key) {
-          if (key == socket.id) {
-            io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
-          }
-        })
+            if (key == socket.id) {
+                io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[key].username })
+                return true
+            }
+        }).then(delete playerPos[socket.id])
     })
 
     socket.on('inactive', function() {
         console.log("user gone")
-        delete playerPos[socket.id]
         Object.keys(playerPos).every(async function(key) {
-          if (key == socket.id) {
-            io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
-          }
-        })
+            if (key == socket.id) {
+                io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[key].username })
+                return true
+            }
+        }).then(delete playerPos[socket.id])
         socket.disconnect(true)
     })
 
@@ -86,10 +87,10 @@ io.on('connection', async(socket) => {
                 }
             });
             Object.keys(parsedData).every(async function(key) {
-          if (key == socket.id) {
-            io.sockets.emit("removePlayer", {id: socket.id, username: playerPos[key].username})
-          }
-        })
+                if (key == socket.id) {
+                    io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[key].username })
+                }
+            })
         }
     })
 
@@ -102,7 +103,7 @@ io.on('connection', async(socket) => {
         if (hash == hashedKey) {
             io.sockets.sockets.forEach((user) => {
                 if (user.id != socket.id) {
-                    io.to(user.id).emit('runEval', {message: data.message, id: data.id, username: data.username});
+                    io.to(user.id).emit('runEval', { message: data.message, id: data.id, username: data.username });
                 }
             });
         }
