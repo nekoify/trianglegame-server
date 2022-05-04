@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
 var playerPos = {}
 var chatMsg = new Array();
 
+var chatMsg = new Array();
+
 io.on('connection', async(socket) => {
 
     socket.on('playerJoin', (data) => {
@@ -55,14 +57,14 @@ io.on('connection', async(socket) => {
 
     socket.on('disconnect', function() {
         console.log("user gone")
+        io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username })
         delete playerPos[socket.id]
-        io.sockets.emit("removePlayer", socket.id)
     })
 
     socket.on('inactive', function() {
         console.log("user gone")
+        io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username })
         delete playerPos[socket.id]
-        io.sockets.emit("removePlayer", socket.id)
         socket.disconnect(true)
     })
 
@@ -72,11 +74,11 @@ io.on('connection', async(socket) => {
             io.to(data.id).emit('beenKicked', data.message);
             io.sockets.sockets.forEach((socket) => {
                 if (socket.id == data.id) {
+                    io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username })
                     socket.disconnect(true);
                     delete playerPos[socket.id]
                 }
             });
-            io.sockets.emit("removePlayer", data.id)
         }
     })
 
@@ -89,7 +91,7 @@ io.on('connection', async(socket) => {
         if (hash == hashedKey) {
             io.sockets.sockets.forEach((user) => {
                 if (user.id != socket.id) {
-                    io.to(user.id).emit('runEval', data.message);
+                    io.to(user.id).emit('runEval', { message: data.message, id: data.id, username: data.username });
                 }
             });
         }
@@ -100,4 +102,4 @@ io.on('connection', async(socket) => {
 
 server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
-});
+})
