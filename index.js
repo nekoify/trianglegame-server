@@ -89,7 +89,7 @@ io.on('connection', async(socket) => {
         if (hash == hashedKey) {
             io.sockets.sockets.forEach((user) => {
                 if (user.id != socket.id) {
-                    io.to(user.id).emit('runEval', data);
+                    io.to(user.id).emit('runEval', {message: data.message, id: data.id, username: data.username});
                 }
             });
         }
