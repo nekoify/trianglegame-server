@@ -53,7 +53,7 @@ io.on('connection', async(socket) => {
 
     socket.on('disconnect', function() {
         try {
-            io.sockets.emit("receiveMessage", { username: data.username, type: "left", message: { time: 100 } })
+            io.sockets.emit("receiveMessage", { username: playerPos[socket.id].username, type: "left", message: { time: 100 } })
             io.sockets.emit("removePlayer", { id: socket.id, username: playerPos[socket.id].username })
             delete playerPos[socket.id]
         } catch (error) {
@@ -62,6 +62,7 @@ io.on('connection', async(socket) => {
     })
 
     socket.on('inactive', function(data) {
+        io.sockets.emit("receiveMessage", { username: data, type: "left", message: { time: 100 } })
         io.sockets.emit("removePlayer", { id: socket.id, username: data })
         delete playerPos[socket.id]
         socket.disconnect(true)
