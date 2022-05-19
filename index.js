@@ -28,7 +28,8 @@ io.on('connection', async(socket) => {
             angle: data.angle,
             angVel: data.angVel,
             scale: data.scale,
-            username: data.username
+            username: data.username,
+            browserId: data.browserId
         }
         socket.emit("createExistingPlayers", playerPos)
         io.sockets.emit("createPlayer", data)
@@ -45,7 +46,8 @@ io.on('connection', async(socket) => {
             angle: data.angle,
             angVel: data.angVel,
             scale: data.scale,
-            username: data.username
+            username: data.username,
+            browserId: data.browserId
         }
 
         socket.emit("updatePlayers", { playerdata: playerPos, ts: timestamp })
