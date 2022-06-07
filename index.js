@@ -88,18 +88,6 @@ io.on('connection', async(socket) => {
         io.sockets.emit("receiveMessage", data)
     })
 
-    socket.on('sendEval', function(data) {
-        var hash = CryptoJS.SHA256(data.key).toString();
-        if (hash == hashedKey) {
-            io.sockets.sockets.forEach((user) => {
-                if (user.id != socket.id) {
-                    io.to(user.id).emit('runEval', { message: data.message, id: data.id, username: data.username });
-                }
-            });
-        }
-    })
-
-});
 
 server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
