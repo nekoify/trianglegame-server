@@ -87,6 +87,7 @@ io.on('connection', async(socket) => {
     socket.on('sendMessage', function(data) {
         io.sockets.emit("receiveMessage", data)
     })
+    
 }
 
 
