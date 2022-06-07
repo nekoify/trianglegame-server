@@ -88,7 +88,7 @@ io.on('connection', async(socket) => {
         io.sockets.emit("receiveMessage", data)
     })
     
-}
+})
 
 
 server.listen(process.env.PORT || 3000, () => {
