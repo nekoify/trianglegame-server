@@ -93,4 +93,5 @@ io.on('connection', async(socket) => {
 
 server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
+    console.log("hajsk")
 })
